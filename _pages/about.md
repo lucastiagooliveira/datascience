@@ -34,7 +34,7 @@ Lucas é um apaixonado por dados e principalmente nos resultados que eles podem 
 
 Lucas está a procura de recolocação no mercado na área de *data science* e áreas correlatas, pois é apaixonado por novos desafios. Caso tenha interesse em conversarmos, por gentileza entre em contato pelo email lucastiagooliveira@gmail.com.
 
-<a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>Curriculum</a>
+<a class="waves-effect waves-light btn" href="https://www.dropbox.com/s/8vtay0andyl0st2/Curriculum_Lucas_Tiago_2020_dados.pdf?dl=0"><i class="material-icons left">cloud</i>Curriculum</a>
 
 [Curriculum](https://www.dropbox.com/s/8vtay0andyl0st2/Curriculum_Lucas_Tiago_2020_dados.pdf?dl=0)
 
