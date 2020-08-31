@@ -148,6 +148,12 @@ window.onload = wrap_img;
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Carregando-os-pacotes-do-python">Carregando os pacotes do python<a class="anchor-link" href="#Carregando-os-pacotes-do-python"> </a></h2>
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -170,6 +176,12 @@ window.onload = wrap_img;
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Fazendo-conex&#227;o-com-o-banco-de-dados">Fazendo conex&#227;o com o banco de dados<a class="anchor-link" href="#Fazendo-conex&#227;o-com-o-banco-de-dados"> </a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <p>Antes de mais nada precisamos conectar com o banco de dados que está instalado, o qual necessita dos seguintes dados:</p>
 <ul>
 <li>SERVER (nome do servidor);</li>
@@ -181,6 +193,12 @@ window.onload = wrap_img;
 <p>Para estabelecer uma conexão utiliza-se o método <code>pyodbc.connect</code> da seguinte forma:</p>
 <p><code>pyodbc.connect('DRIVER='+driver+';SERVER='+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password)</code></p>
 
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Criando-cursor">Criando cursor<a class="anchor-link" href="#Criando-cursor"> </a></h2>
 </div>
 </div>
 </div>
@@ -210,6 +228,12 @@ window.onload = wrap_img;
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Criando-uma-tabela-no-SQL-Server">Criando uma tabela no SQL Server<a class="anchor-link" href="#Criando-uma-tabela-no-SQL-Server"> </a></h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Com o cursor aberto, podemos utiliza-lo para realizarmos as consultas (<em>queries</em>) no banco de dados, da qual está excluindo a tabela no banco de dados com o nome <code>Socioeconomic_chicago</code> se ela existir.</p>
@@ -312,6 +336,12 @@ window.onload = wrap_img;
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Salvando-os-dados-no-banco-de-dados">Salvando os dados no banco de dados<a class="anchor-link" href="#Salvando-os-dados-no-banco-de-dados"> </a></h2>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <p>Declarar o caminho onde está localizado o arquivo em <code>.csv</code>.</p>
