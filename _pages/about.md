@@ -25,7 +25,7 @@ permalink: /about/
 
 <div class="container">
 	<img src="https://github.com/lucastiagooliveira/datascience/blob/master/images/perfil.jpg?raw=true" 
-		alt="perfil" style="float: left" />	
+		alt="perfil" style="float: right" />	
 </div>
 
 <p>
