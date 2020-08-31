@@ -1,3 +1,21 @@
+ <html>
+   <head>
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+   </head>
+
+   <body>
+
+      <!--JavaScript at end of body for optimized loading-->
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+   </body>
+ </html>
+
 ---
 layout: page
 title: About Me
@@ -13,5 +31,6 @@ Lucas é um apaixonado por dados e principalmente nos resultados que eles podem 
 
 Lucas está a procura de recolocação no mercado na área de *data science* e áreas correlatas, pois é apaixonado por novos desafios. Caso tenha interesse em conversarmos, por gentileza entre em contato pelo email lucastiagooliveira@gmail.com.
 
+<a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a>
 
 [Curriculum](https://www.dropbox.com/s/8vtay0andyl0st2/Curriculum_Lucas_Tiago_2020_dados.pdf?dl=0)
