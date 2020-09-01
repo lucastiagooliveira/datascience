@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Transformando uma imagem em .CSV para .JPEG | DataScience</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Transformando uma imagem em .CSV para .JPEG" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Demostração do código para tranformar o arquivo MNIST em csv para jpeg." />
+<meta property="og:description" content="Demostração do código para tranformar o arquivo MNIST em csv para jpeg." />
+<link rel="canonical" href="https://lucastiagooliveira.github.io/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html" />
+<meta property="og:url" content="https://lucastiagooliveira.github.io/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html" />
+<meta property="og:site_name" content="DataScience" />
+<meta property="og:image" content="https://lh3.googleusercontent.com/proxy/Q4PvirgyqeAGPRxKBOT1YJQyaGGYyAAdup1d9ldMfSeR7WhlJ0EWC-nXX-Yz6vxaXXriNRP5z9TP_Gm0ajYp0rRM" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-01T00:00:00-05:00" />
+<script type="application/ld+json">
+{"headline":"Transformando uma imagem em .CSV para .JPEG","description":"Demostração do código para tranformar o arquivo MNIST em csv para jpeg.","datePublished":"2020-09-01T00:00:00-05:00","dateModified":"2020-09-01T00:00:00-05:00","image":"https://lh3.googleusercontent.com/proxy/Q4PvirgyqeAGPRxKBOT1YJQyaGGYyAAdup1d9ldMfSeR7WhlJ0EWC-nXX-Yz6vxaXXriNRP5z9TP_Gm0ajYp0rRM","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html"},"url":"https://lucastiagooliveira.github.io/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/datascience/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/datascience/feed.xml" title="DataScience" /><link rel="shortcut icon" type="image/x-icon" href="/datascience/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Transformando uma imagem em .CSV para .JPEG | DataScience</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Transformando uma imagem em .CSV para .JPEG" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Demostração do código para tranformar o arquivo MNIST em csv para jpeg." />
+<meta property="og:description" content="Demostração do código para tranformar o arquivo MNIST em csv para jpeg." />
+<link rel="canonical" href="https://lucastiagooliveira.github.io/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html" />
+<meta property="og:url" content="https://lucastiagooliveira.github.io/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html" />
+<meta property="og:site_name" content="DataScience" />
+<meta property="og:image" content="https://lh3.googleusercontent.com/proxy/Q4PvirgyqeAGPRxKBOT1YJQyaGGYyAAdup1d9ldMfSeR7WhlJ0EWC-nXX-Yz6vxaXXriNRP5z9TP_Gm0ajYp0rRM" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-09-01T00:00:00-05:00" />
+<script type="application/ld+json">
+{"headline":"Transformando uma imagem em .CSV para .JPEG","description":"Demostração do código para tranformar o arquivo MNIST em csv para jpeg.","datePublished":"2020-09-01T00:00:00-05:00","dateModified":"2020-09-01T00:00:00-05:00","image":"https://lh3.googleusercontent.com/proxy/Q4PvirgyqeAGPRxKBOT1YJQyaGGYyAAdup1d9ldMfSeR7WhlJ0EWC-nXX-Yz6vxaXXriNRP5z9TP_Gm0ajYp0rRM","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html"},"url":"https://lucastiagooliveira.github.io/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/datascience/feed.xml" title="DataScience" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/datascience/">DataScience</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/datascience/about/">About Me</a><a class="page-link" href="/datascience/search/">Search</a><a class="page-link" href="/datascience/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Transformando uma imagem em .CSV para .JPEG</h1><p class="page-description">Demostração do código para tranformar o arquivo MNIST em csv para jpeg.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-09-01T00:00:00-05:00" itemprop="datePublished">
+        Sep 1, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      2 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/datascience/categories/#sqlserver">sqlserver</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/datascience/categories/#csv">csv</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/lucastiagooliveira/datascience/tree/master/_notebooks/2020-09-01-transform-csv-jpeg.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/datascience/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/lucastiagooliveira/datascience/master?filepath=_notebooks%2F2020-09-01-transform-csv-jpeg.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/datascience/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/lucastiagooliveira/datascience/blob/master/_notebooks/2020-09-01-transform-csv-jpeg.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/datascience/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <ul class="section-nav">
+<li class="toc-entry toc-h2"><a href="#Carregando-a-base-de-dados">Carregando a base de dados </a></li>
+<li class="toc-entry toc-h2"><a href="#Tranformação-dos-dados-utilizando-numpy">Tranformação dos dados utilizando numpy </a></li>
+<li class="toc-entry toc-h2"><a href="#Transformando-em-imagem">Transformando em imagem </a></li>
+<li class="toc-entry toc-h2"><a href="#Exibindo-alguns-dados-já-transformados">Exibindo alguns dados já transformados </a></li>
+</ul><!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-09-01-transform-csv-jpeg.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Para utilizamos algumas dos frameworks de machine learning mais utilizandos atualmente, não podemos carregar estas imagens se os dados dos pixels dessas imagens estiverem em um arquivo tipo <code>.csv</code>. Para isso, é importante fazermos a conversão desse tipo de arquivo para uma extensão suportada.</p>
+<p>Esse arquivo pode ser obtido diretamente no site do Kaggle: <a href="https://www.kaggle.com/c/digit-recognizer/data">https://www.kaggle.com/c/digit-recognizer/data</a></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#importando os pacotes necessários</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">imageio</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">fastai.vision.all</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">Image</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Carregando-a-base-de-dados">
+<a class="anchor" href="#Carregando-a-base-de-dados" aria-hidden="true"><span class="octicon octicon-link"></span></a>Carregando a base de dados<a class="anchor-link" href="#Carregando-a-base-de-dados"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">r</span><span class="s2">"C:\Users\lucas\Documents\lucastiagooliveira\Kaggle\digit-recognizer\fastai\data"</span><span class="p">)</span> <span class="c1">#definindo o caminho</span>
+<span class="n">df_train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'/train.csv'</span><span class="p">)</span> <span class="c1">#carregando o arquivo de treino</span>
+<span class="n">df_test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'/test.csv'</span><span class="p">)</span> <span class="c1">#carregando o arquivo de test</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df_train</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>label</th>
+      <th>pixel0</th>
+      <th>pixel1</th>
+      <th>pixel2</th>
+      <th>pixel3</th>
+      <th>pixel4</th>
+      <th>pixel5</th>
+      <th>pixel6</th>
+      <th>pixel7</th>
+      <th>pixel8</th>
+      <th>...</th>
+      <th>pixel774</th>
+      <th>pixel775</th>
+      <th>pixel776</th>
+      <th>pixel777</th>
+      <th>pixel778</th>
+      <th>pixel779</th>
+      <th>pixel780</th>
+      <th>pixel781</th>
+      <th>pixel782</th>
+      <th>pixel783</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 785 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Tranformação-dos-dados-utilizando-numpy">
+<a class="anchor" href="#Tranforma%C3%A7%C3%A3o-dos-dados-utilizando-numpy" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tranformação dos dados utilizando numpy<a class="anchor-link" href="#Tranforma%C3%A7%C3%A3o-dos-dados-utilizando-numpy"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Antes de tudo deve-se realizar o mudança da base de dados para utilizando o numpy, pois cada imagem é um vetor linha, ou seja, criar uma matriz 28x28 (que é a quantidade de pixels da imagem).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">to_img_shape</span><span class="p">(</span><span class="n">data_X</span><span class="p">,</span> <span class="n">data_y</span><span class="o">=</span><span class="p">[]):</span> <span class="c1">#função para transformação dos dados</span>
+    <span class="n">data_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_X</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">28</span><span class="p">,</span><span class="mi">28</span><span class="p">)</span>
+    <span class="n">data_X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">((</span><span class="n">data_X</span><span class="p">,)</span><span class="o">*</span><span class="mi">3</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">data_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data_y</span><span class="p">,</span> <span class="n">dtype</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_X</span><span class="p">,</span><span class="n">data_y</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Separando as variáveis dependentes das idenpendentes.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">y</span><span class="p">,</span> <span class="n">X</span> <span class="o">=</span> <span class="n">df_train</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">'label'</span><span class="p">),</span> <span class="n">df_train</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Criando os dataset para validação futura do modelo.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">train_X</span><span class="p">,</span> <span class="n">val_X</span><span class="p">,</span> <span class="n">train_y</span><span class="p">,</span> <span class="n">val_y</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Aplicando a transformação nos dados de treino, validação e teste.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span> <span class="o">=</span> <span class="n">to_img_shape</span><span class="p">(</span><span class="n">train_X</span><span class="p">,</span> <span class="n">train_y</span><span class="p">)</span>
+<span class="n">val_X</span><span class="p">,</span><span class="n">val_y</span> <span class="o">=</span> <span class="n">to_img_shape</span><span class="p">(</span><span class="n">val_X</span><span class="p">,</span><span class="n">val_y</span><span class="p">)</span>
+<span class="n">test_X</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">to_img_shape</span><span class="p">(</span><span class="n">df_test</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Transformando-em-imagem">
+<a class="anchor" href="#Transformando-em-imagem" aria-hidden="true"><span class="octicon octicon-link"></span></a>Transformando em imagem<a class="anchor-link" href="#Transformando-em-imagem"> </a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Utilizando a biblioteca <code>imageio</code> podemos criar os arquivos, para cada conjunto de dados será criado uma nova pasta.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">save_imgs</span><span class="p">(</span><span class="n">path</span><span class="p">:</span><span class="n">Path</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">path</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+        <span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="nb">str</span><span class="p">(</span><span class="n">label</span><span class="p">))</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+        <span class="k">if</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">imageio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="nb">str</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">/</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s1">'.jpeg'</span><span class="p">)),</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">imageio</span><span class="o">.</span><span class="n">imsave</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="o">/</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">+</span><span class="s1">'.jpg'</span><span class="p">)),</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">save_imgs</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s1">'data/train'</span><span class="p">),</span><span class="n">train_X</span><span class="p">,</span><span class="n">train_y</span><span class="p">)</span>
+<span class="n">save_imgs</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s1">'data/valid'</span><span class="p">),</span><span class="n">val_X</span><span class="p">,</span><span class="n">val_y</span><span class="p">)</span>
+<span class="n">save_imgs</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="s1">'data/test'</span><span class="p">),</span><span class="n">test_X</span><span class="p">,</span> <span class="p">[])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Exibindo-alguns-dados-já-transformados">
+<a class="anchor" href="#Exibindo-alguns-dados-j%C3%A1-transformados" aria-hidden="true"><span class="octicon octicon-link"></span></a>Exibindo alguns dados já transformados<a class="anchor-link" href="#Exibindo-alguns-dados-j%C3%A1-transformados"> </a>
+</h2>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">"\train\0\0.jpeg"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAcABwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5/rZ0Dwlr/iiZo9F0q4vNvDOi4Rfq5wo/E1s/D3wrY+IL++v9bmaDQtJh+0XzrkFhztQEd2IPvwcV2rfHO2t/Dz6Vo2hTaP5Lf6G1nOmAB03hkOc9/X1oA818R+DfEHhJ4U13TJLPzgfLYsrq2OoDKSM+2awq+mNO1bRPjP4LbQLpmm161sFuGnaMR+XcHK5XnkZxnAxhh36fM9AHovwt1jQI4Nf8M+JLj7JYa5BGgujwIpIyxUk9By2cnjIGauT/AAdtrY/aJvHnhtNPJyJzP8xU9Dt6Z9s15dRQB6mnirwp8PdP1Kx8ImbWdUvoTbzancp5cSIeojTqfx7gda8soooA/9k=%0A">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">Image</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="o">+</span> <span class="sa">r</span><span class="s2">"\valid\0\5.jpeg"</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_jpeg output_subarea output_execute_result">
+<img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAAcABwDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD5/rtvDXgK01PwzL4j1/xDDoWlef8AZ4ZXt2neaQDJARSDjGfXoeK4uNGlkWNFLOxCqB1JNehfFudLHVNJ8J25X7NoNhHA2E275nUNI59z8v45oAwfFng2bwwLO6hv7fU9KvlLWt9bZ2vjqrA/dYcZFczXoegNJefBTxba3ABtrK8tbq2Z+iys2xgPcrj25rzygCSCZre4inTG+Nw659Qc1634k8F3/wAT9Z/4S3wrJaz2t+kZu4pbhUeylCBWDg9vl4Izn6V5BRQB6X4w1LS/C/giDwHomoRajJLcfbNVvYTmNpeAI0OeQNq/kO5IHmlFFAH/2Q==%0A">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered">
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Este trabalho precisou ser realizado por conta que o <code>fastai</code> não tem suporte a carregamento de arquivos <code>.csv</code> para treinamento dos modelos.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="lucastiagooliveira/datascience"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/datascience/sqlserver/csv/2020/09/01/transform-csv-jpeg.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/datascience/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/datascience/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/datascience/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/lucastiagoliveira%2Flucas_repo" title="lucastiagoliveira/lucas_repo"><svg class="svg-icon grey"><use xlink:href="/datascience/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/lucas-tiago-7a4a1362" title="lucas-tiago-7a4a1362"><svg class="svg-icon grey"><use xlink:href="/datascience/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/LucasTiago4578" title="LucasTiago4578"><svg class="svg-icon grey"><use xlink:href="/datascience/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
