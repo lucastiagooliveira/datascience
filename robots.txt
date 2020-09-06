@@ -1,1 +1,1 @@
-Sitemap: https://lucastiagooliveira.github.io/blog/sitemap.xml
+Sitemap: https://lucastiagooliveira.github.io/datascience/sitemap.xml
