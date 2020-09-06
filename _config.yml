@@ -40,7 +40,7 @@ baseurl: "/blog" # the subpath of your site, e.g. "/blog".
 minima:
   social_links:
     twitter: LucasTiago4578
-    github: https://github.com/lucastiagooliveira/lucas_repo
+    github: lucas_repo
     linkedin: lucas-tiago-7a4a1362
 
 # Set this to true to get LaTeX math equation support
