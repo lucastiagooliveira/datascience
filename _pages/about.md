@@ -23,10 +23,6 @@ permalink: /about/
 </html>
 
 
-<div class="container">
-	<img src="https://github.com/lucastiagooliveira/datascience/blob/master/images/perfil.jpg?raw=true" 
-		alt="perfil" style="float: right" />	
-</div>
 
 <p align="justify">
 Lucas Tiago é um cientista de dados em formação e em busca de novos desfios, com experiência em engenharia de manutenção hopitalar e qualidade da energia elétrica.
