@@ -55,6 +55,17 @@
         
     
   
+    
+        ,"post5": {
+            "title": "Como utilizar um Jupiter Notebook no modo escuro?",
+            "content": "Se você também gosta de codar utilizando Jupyter Notebooks e ainda usa o modo escuro em todas as janelas para não sentir cansaço visual depois de ficar olhando para tela o dia todo, já deve ter se peguntado como posso mudar o tema do jupyter notebook para o modo escuro? . Mas se você procurar em todas as configurações não vai encontrar nada que possa resolver esse problema nas configurações padrões. Para fazermos isso temos duas possibilidades (gosto mais da segunda opção), as quais demostrarei a seguir. . Utilizar o pacote jupyter-themes . Para instalar esse pacote basta digitar no prompt de comando para instalar esse pacote que foi criado por Kyle Dunovan: . #intalação jupyterthemes pip install jupyterthemes . Ou utilizando o anaconda para instalação: . #instalação jupyterthemes utilizando o anaconda: conda install jupyterthemes . Após a instalação para verificar os temas diponíveis basta digitar: . jt -l . Serão listados os temas que estão disponíveis para utilização (por exemplo): . onedork | grade3 | oceans16 | chesterish | monokai | solarizedl | solarizedd . Para escolher o tema a ser utilizado: . # seleção do tema jt -t &lt;nome do tema&gt; # para exemplificar jt -t chesterish . Então para voltar a utilizar o tema original, só utilizar o comando: . Obs.: Caso não funcione, tente abrir um novo jupyter notebook . #voltar o tema original jt -r . Para mais configurações e informações desse tema, acesso o repositório oficial: https://github.com/dunovank/jupyter-themes . Utilizar o JupyterLab . JupyterLab é a nova geração da interface web do Project Jupyter, este já vem instalado para quem utiliza os ultimos pacotes do anaconda (https://docs.anaconda.com/anaconda/packages/pkg-docs/). Para quem não utiliza essas versões podem fazer a instalação separada utilizando as instruções do site: https://jupyterlab.readthedocs.io/en/stable/getting_started/installation.html. . Para abrir o JupyterLab basta digitir no prompt de comando: . jupyter lab . Após executado vai ser aberto o JupyterLab no seu browser, irá abrir de forma similar a imagem abaixo: . . Então com o JupyterLab aberto basta ir em Settings -&gt; JupyterLab Theme -&gt; JupyterLab Dark. . . Boom! . O seu notebook estará em modo escuro, pronto para ser utilizado. .",
+            "url": "https://lucastiagooliveira.github.io/datascience/jupyter/modoescuro/darkmode/2020/08/31/modo-escuro-jupyter-notebook.html",
+            "relUrl": "/jupyter/modoescuro/darkmode/2020/08/31/modo-escuro-jupyter-notebook.html",
+            "date": " • Aug 31, 2020"
+        }
+        
+    
+  
 
   
   
