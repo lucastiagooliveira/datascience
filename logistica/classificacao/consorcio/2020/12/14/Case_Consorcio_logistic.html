@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Case: Consórcio (Classificação) | DataScience</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Case: Consórcio (Classificação)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Totorial de como utilizar regressão logística com a biblioteca statsmodels." />
+<meta property="og:description" content="Totorial de como utilizar regressão logística com a biblioteca statsmodels." />
+<link rel="canonical" href="https://lucastiagooliveira.github.io/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html" />
+<meta property="og:url" content="https://lucastiagooliveira.github.io/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html" />
+<meta property="og:site_name" content="DataScience" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-14T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"Case: Consórcio (Classificação)","dateModified":"2020-12-14T00:00:00-06:00","datePublished":"2020-12-14T00:00:00-06:00","description":"Totorial de como utilizar regressão logística com a biblioteca statsmodels.","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html"},"@type":"BlogPosting","url":"https://lucastiagooliveira.github.io/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/datascience/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/datascience/feed.xml" title="DataScience" /><link rel="shortcut icon" type="image/x-icon" href="/datascience/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Case: Consórcio (Classificação) | DataScience</title>
+<meta name="generator" content="Jekyll v4.0.0" />
+<meta property="og:title" content="Case: Consórcio (Classificação)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Totorial de como utilizar regressão logística com a biblioteca statsmodels." />
+<meta property="og:description" content="Totorial de como utilizar regressão logística com a biblioteca statsmodels." />
+<link rel="canonical" href="https://lucastiagooliveira.github.io/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html" />
+<meta property="og:url" content="https://lucastiagooliveira.github.io/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html" />
+<meta property="og:site_name" content="DataScience" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2020-12-14T00:00:00-06:00" />
+<script type="application/ld+json">
+{"headline":"Case: Consórcio (Classificação)","dateModified":"2020-12-14T00:00:00-06:00","datePublished":"2020-12-14T00:00:00-06:00","description":"Totorial de como utilizar regressão logística com a biblioteca statsmodels.","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html"},"@type":"BlogPosting","url":"https://lucastiagooliveira.github.io/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+<link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/datascience/feed.xml" title="DataScience" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/datascience/">DataScience</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/datascience/about/">About Me</a><a class="page-link" href="/datascience/search/">Search</a><a class="page-link" href="/datascience/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Case: Consórcio (Classificação)</h1><p class="page-description">Totorial de como utilizar regressão logística com a biblioteca statsmodels.</p><p class="post-meta post-meta-title"><time class="dt-published" datetime="2020-12-14T00:00:00-06:00" itemprop="datePublished">
+        Dec 14, 2020
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      5 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/datascience/categories/#logistica">logistica</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/datascience/categories/#classificacao">classificacao</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/datascience/categories/#consorcio">consorcio</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/lucastiagooliveira/datascience/tree/master/_notebooks/2020-12-14-Case_Consorcio_logistic.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/datascience/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/lucastiagooliveira/datascience/master?filepath=_notebooks%2F2020-12-14-Case_Consorcio_logistic.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/datascience/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/lucastiagooliveira/datascience/blob/master/_notebooks/2020-12-14-Case_Consorcio_logistic.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/datascience/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2020-12-14-Case_Consorcio_logistic.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Suponha que uma instituição financeira deseja estimar a probabilidade de um cliente contratou um consórcio de
+automóvel, p=P(Y=1). Variável resposta: 1 – contratou o consórcio e 0 – não contratou o consórcio.</strong></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span><span class="p">,</span> <span class="n">accuracy_score</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="s2">&quot;Consorcio.xlsx&quot;</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s2">&quot;BASE DE DADOS&quot;</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Contratou</th>
+      <th>DI</th>
+      <th>Financiamento</th>
+      <th>Poupança</th>
+      <th>Salário</th>
+      <th>CC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>29537.631</td>
+      <td>4923797.68</td>
+      <td>648.681</td>
+      <td>90943.36</td>
+      <td>5390.57232</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>196755.372</td>
+      <td>4006518.12</td>
+      <td>2208.237</td>
+      <td>81735.48</td>
+      <td>4632.16404</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>120872.580</td>
+      <td>3583136.88</td>
+      <td>7747.857</td>
+      <td>85892.78</td>
+      <td>5808.66874</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>215312.000</td>
+      <td>3516259.70</td>
+      <td>5583.999</td>
+      <td>3770.16</td>
+      <td>3622.61240</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>738038.139</td>
+      <td>3248257.80</td>
+      <td>67986.180</td>
+      <td>1317.92</td>
+      <td>9560.52240</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>(a) Faça a análise exploratória univariada e interprete todas as variáveis do banco de dados.</strong></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Análise univariada</span>
+<span class="n">df</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 89 entries, 0 to 88
+Data columns (total 6 columns):
+ #   Column         Non-Null Count  Dtype  
+---  ------         --------------  -----  
+ 0   Contratou      89 non-null     int64  
+ 1   DI             89 non-null     float64
+ 2   Financiamento  89 non-null     float64
+ 3   Poupança       89 non-null     float64
+ 4   Salário        89 non-null     float64
+ 5   CC             89 non-null     float64
+dtypes: float64(5), int64(1)
+memory usage: 4.3 KB
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Contratou</th>
+      <th>DI</th>
+      <th>Financiamento</th>
+      <th>Poupança</th>
+      <th>Salário</th>
+      <th>CC</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>89.000000</td>
+      <td>89.000000</td>
+      <td>8.900000e+01</td>
+      <td>89.000000</td>
+      <td>89.000000</td>
+      <td>89.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.550562</td>
+      <td>301413.789549</td>
+      <td>1.228615e+06</td>
+      <td>19774.266045</td>
+      <td>34354.889438</td>
+      <td>5702.393457</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.500255</td>
+      <td>249528.494442</td>
+      <td>1.018172e+06</td>
+      <td>31623.011024</td>
+      <td>29305.261298</td>
+      <td>4589.353601</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.000000</td>
+      <td>3090.153000</td>
+      <td>5.838863e+04</td>
+      <td>36.369000</td>
+      <td>1200.000000</td>
+      <td>268.135840</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.000000</td>
+      <td>127720.800000</td>
+      <td>5.508031e+05</td>
+      <td>1287.098000</td>
+      <td>11200.550000</td>
+      <td>2278.598980</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>1.000000</td>
+      <td>203243.200000</td>
+      <td>8.395141e+05</td>
+      <td>3757.220000</td>
+      <td>22284.610000</td>
+      <td>4632.164040</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>1.000000</td>
+      <td>464022.591000</td>
+      <td>1.688979e+06</td>
+      <td>23705.380000</td>
+      <td>58565.010000</td>
+      <td>8781.163580</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.000000</td>
+      <td>897239.700000</td>
+      <td>4.923798e+06</td>
+      <td>138717.280000</td>
+      <td>90943.360000</td>
+      <td>23213.995200</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>Faça a análise bivariada das variáveis explicativas (covariáveis) vs. a variável resposta. Você acredita que:</strong></p>
+<ol>
+<li>O Valor Investido no Fundo DI (variável DI) é menor, em geral, para quem contratou consórcio?</li>
+<li>O Valor do Financiamento Imobiliário (variável Financiamento) é maior, em geral, para quem contratou consórcio?</li>
+<li>O Valor Aplicado na Poupança (variável Poupança) é maior, em geral, para quem contratou consórcio?</li>
+<li>O Salário do Cliente (variável Salário) é maior, em geral, para quem contratou consórcio?</li>
+<li>O Gasto no Cartão de Crédito (variável CC) é menor, em geral, para quem contratou consórcio?</li>
+</ol>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Análise Bivariada</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">PairGrid</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+             <span class="n">x_vars</span><span class="o">=</span><span class="s1">&#39;Contratou&#39;</span><span class="p">,</span>
+             <span class="n">y_vars</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;DI&#39;</span><span class="p">,</span><span class="s1">&#39;Financiamento&#39;</span><span class="p">,</span><span class="s1">&#39;Poupança&#39;</span><span class="p">,</span><span class="s1">&#39;Salário&#39;</span><span class="p">,</span> <span class="s1">&#39;CC&#39;</span><span class="p">],</span>
+             <span class="n">height</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">,</span> <span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;seaborn.axisgrid.PairGrid at 0x2682ba06670&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+" />
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>O Valor Investido no Fundo DI (variável DI) é menor, em geral, para quem contratou consórcio?</strong> Sim</p>
+<p><strong>O Valor do Financiamento Imobiliário (variável Financiamento) é maior, em geral, para quem contratou consórcio?</strong> Sim</p>
+<p><strong>O Valor Aplicado na Poupança (variável Poupança) é maior, em geral, para quem contratou consórcio?</strong> Sim</p>
+<p><strong>O Salário do Cliente (variável Salário) é maior, em geral, para quem contratou consórcio?</strong> Sim</p>
+<p><strong>O Gasto no Cartão de Crédito (variável CC) é menor, em geral, para quem contratou consórcio?</strong> Sim</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>(c) Obtenha o modelo de regressão logística utilizando 90% de confiança.</strong></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">log_reg</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="s2">&quot;Contratou ~ DI + Financiamento + Poupança + Salário + CC&quot;</span><span class="p">,</span>
+                   <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">log_reg</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Optimization terminated successfully.
+         Current function value: 0.218736
+         Iterations 8
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:              Contratou   No. Observations:                   89
+Model:                          Logit   Df Residuals:                       83
+Method:                           MLE   Df Model:                            5
+Date:                Mon, 14 Dec 2020   Pseudo R-squ.:                  0.6821
+Time:                        18:19:42   Log-Likelihood:                -19.467
+converged:                       True   LL-Null:                       -61.234
+Covariance Type:            nonrobust   LLR p-value:                 1.528e-16
+=================================================================================
+                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+Intercept        -3.4499      1.352     -2.552      0.011      -6.099      -0.800
+DI            -4.269e-06   2.47e-06     -1.728      0.084   -9.11e-06    5.72e-07
+Financiamento  5.792e-07   4.42e-07      1.310      0.190   -2.87e-07    1.45e-06
+Poupança       6.478e-05   2.43e-05      2.669      0.008    1.72e-05       0.000
+Salário           0.0001   2.64e-05      3.887      0.000    5.09e-05       0.000
+CC             6.791e-05      0.000      0.660      0.509      -0.000       0.000
+=================================================================================
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Como podemos perceber a variável CC não tem a garantia que ela será boa para realizarmos o modelo, portanto iremos retira-la.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">log_reg</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="s2">&quot;Contratou ~ DI + Financiamento + Poupança + Salário&quot;</span><span class="p">,</span>
+                   <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">print</span><span class="p">(</span><span class="n">log_reg</span><span class="o">.</span><span class="n">summary</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Optimization terminated successfully.
+         Current function value: 0.221020
+         Iterations 8
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:              Contratou   No. Observations:                   89
+Model:                          Logit   Df Residuals:                       84
+Method:                           MLE   Df Model:                            4
+Date:                Mon, 14 Dec 2020   Pseudo R-squ.:                  0.6788
+Time:                        18:19:42   Log-Likelihood:                -19.671
+converged:                       True   LL-Null:                       -61.234
+Covariance Type:            nonrobust   LLR p-value:                 3.787e-17
+=================================================================================
+                    coef    std err          z      P&gt;|z|      [0.025      0.975]
+---------------------------------------------------------------------------------
+Intercept        -2.9477      1.075     -2.741      0.006      -5.055      -0.840
+DI            -4.835e-06   2.38e-06     -2.034      0.042   -9.49e-06   -1.75e-07
+Financiamento  5.451e-07    4.4e-07      1.240      0.215   -3.16e-07    1.41e-06
+Poupança       7.028e-05   2.34e-05      3.002      0.003    2.44e-05       0.000
+Salário           0.0001   2.53e-05      3.968      0.000    5.07e-05       0.000
+=================================================================================
+None
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Iremos realizar o mesmo procedimento com a variável Financiamento.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">log_reg</span> <span class="o">=</span> <span class="n">sm</span><span class="o">.</span><span class="n">logit</span><span class="p">(</span><span class="s2">&quot;Contratou ~ DI + Poupança + Salário&quot;</span><span class="p">,</span>
+                   <span class="n">data</span> <span class="o">=</span> <span class="n">df</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">print</span><span class="p">(</span><span class="n">log_reg</span><span class="o">.</span><span class="n">summary</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Optimization terminated successfully.
+         Current function value: 0.229640
+         Iterations 8
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:              Contratou   No. Observations:                   89
+Model:                          Logit   Df Residuals:                       85
+Method:                           MLE   Df Model:                            3
+Date:                Mon, 14 Dec 2020   Pseudo R-squ.:                  0.6662
+Time:                        18:19:42   Log-Likelihood:                -20.438
+converged:                       True   LL-Null:                       -61.234
+Covariance Type:            nonrobust   LLR p-value:                 1.398e-17
+==============================================================================
+                 coef    std err          z      P&gt;|z|      [0.025      0.975]
+------------------------------------------------------------------------------
+Intercept     -2.3707      0.878     -2.701      0.007      -4.091      -0.651
+DI         -4.758e-06   2.22e-06     -2.142      0.032   -9.11e-06   -4.05e-07
+Poupança    7.179e-05   2.26e-05      3.171      0.002    2.74e-05       0.000
+Salário        0.0001   2.51e-05      4.054      0.000    5.25e-05       0.000
+==============================================================================
+None
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>(d) Obtenha a probabilidade estimada.</strong></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="s1">&#39;Contratou&#39;</span><span class="p">]</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;contrata_prob&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">log_reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Contratou</th>
+      <th>DI</th>
+      <th>Financiamento</th>
+      <th>Poupança</th>
+      <th>Salário</th>
+      <th>CC</th>
+      <th>contrata_prob</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>29537.631</td>
+      <td>4923797.68</td>
+      <td>648.681</td>
+      <td>90943.36</td>
+      <td>5390.57232</td>
+      <td>0.998866</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>196755.372</td>
+      <td>4006518.12</td>
+      <td>2208.237</td>
+      <td>81735.48</td>
+      <td>4632.16404</td>
+      <td>0.994298</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>120872.580</td>
+      <td>3583136.88</td>
+      <td>7747.857</td>
+      <td>85892.78</td>
+      <td>5808.66874</td>
+      <td>0.998243</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>215312.000</td>
+      <td>3516259.70</td>
+      <td>5583.999</td>
+      <td>3770.16</td>
+      <td>3622.61240</td>
+      <td>0.068427</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>738038.139</td>
+      <td>3248257.80</td>
+      <td>67986.180</td>
+      <td>1317.92</td>
+      <td>9560.52240</td>
+      <td>0.295636</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p><strong>(e) Obtenha a tabela de classificação.</strong></p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Criando um ponto de corte igual a média da variável Contratou</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;contrata_pred&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="mf">0.50</span> <span class="k">else</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">contrata_prob</span> <span class="p">]</span>
+<span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Contratou</th>
+      <th>DI</th>
+      <th>Financiamento</th>
+      <th>Poupança</th>
+      <th>Salário</th>
+      <th>CC</th>
+      <th>contrata_prob</th>
+      <th>contrata_pred</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>29537.631</td>
+      <td>4923797.68</td>
+      <td>648.681</td>
+      <td>90943.36</td>
+      <td>5390.57232</td>
+      <td>0.998866</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>196755.372</td>
+      <td>4006518.12</td>
+      <td>2208.237</td>
+      <td>81735.48</td>
+      <td>4632.16404</td>
+      <td>0.994298</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>120872.580</td>
+      <td>3583136.88</td>
+      <td>7747.857</td>
+      <td>85892.78</td>
+      <td>5808.66874</td>
+      <td>0.998243</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>215312.000</td>
+      <td>3516259.70</td>
+      <td>5583.999</td>
+      <td>3770.16</td>
+      <td>3622.61240</td>
+      <td>0.068427</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>738038.139</td>
+      <td>3248257.80</td>
+      <td>67986.180</td>
+      <td>1317.92</td>
+      <td>9560.52240</td>
+      <td>0.295636</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#Matrix de confusão</span>
+
+<span class="n">cm1</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Contratou</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">contrata_pred</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">()</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm1</span><span class="p">,</span> <span class="n">annot</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">cbar</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;AxesSubplot:&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAk8AAAHUCAYAAAAjjsxzAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuMiwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy8vihELAAAACXBIWXMAAAsTAAALEwEAmpwYAAAOyElEQVR4nO3be8xeBWHH8d/bUlBcERx3UBEdD8OxDBTIppPFYNycglO2ROYuMm4rc0MJFeIdgqJzU/AyjXiLl1VwMtQZkoEaRGUFCjpQT9yQVtoKWCBVBNqXPvtjpgJi608pT5/28/nrPec8yfn9935znvPMjMfjAADwi5kz6QEAANNEPAEAFMQTAEBBPAEAFMQTAEBhm0fyZndfcKaf9gEPq/kvfd+kJwBbqNk1y2ce6rwnTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFAQTwAABfEEAFDYZtIDYNGVQy5Y/J3MzCSPf9z8vO6ow/Kmzy7Ostt/tP4zK+74UZ62z64596V/MLmhwNRa8Ld/nRNP/MuMx+PceOPSnHjSabnttlWTnsWUEk9M1DeXr8pHvvKtXHDy8zL/Udvmny9Zkndf9vW87SXPWv+Z629eldMWXZ4zXnDIBJcC0+rggw7MK19xUg5++nOyevUP89ZzXps3vmFhFpz8qklPY0ptNJ5Go9H+SY5OsneSdUlWJLlkGIarN/E2tgIH7PXr+cwpR2be3Dm5d+19uXX1j7PnTr+2/vra2fvyuk9/Nac97+nZ/bGPmeBSYFotufa/s/8Bz8zs7Gy222677LnX7rnppu9NehZTbIPvPI1GowVJFv3k8KokS37y9/tHo9Gpm3IYW495c+fkC9/8Xp77totyzU235qiD911/7aIl/5td5m+fZx/w+AkuBKbd7OxsjjzyuVn63avz+888LB/+yCcnPYkpNjMej3/uxdFoNCQ5aBiGHz/o/PZJlgzDsH9zs7svOPPn3wyS/NvV/5MPXn5DPnvKkZkzZyZHvuMzee1Rh+WQJ+026Wlspua/9H2TnsCU+Ztjj8mrFv5dRr/5jGzofyDMrlk+81DnN/Zru9kk8x7i/KOTrP1VR8GyVT/MtUtvXX/8woP3zco778rqe9bk2ytuz33rxnn6PrtOcCEw7Z785H3yjN/76TuTH/rwojzxiXtnp512nNwoptrG3nk6O8m1o9HosiQrk4yT7Jnk2UlevYm3sRX4wQ/vzukXXpFPLnhednrMo/L5r9+Up+z62Oy4/Xb53HXfzaH77paZmYcMf4BfyB6775qPffQ9edohz8mqVXfkmGNelOtvGHL77XdMehpTaoPxNAzDJ0aj0ZeSHJH/j6Y5Sb6c5PXDMKzY9PPY0h28z6457vDfynEfvDRz58zJLvMfnbf/+eFJkmWrVmfPHb0kDvxqrvjK4rz5nPNy2aWfyuzsfVm54vt58dHHTnoWU2yD7zw93LzzBDzcvPMEbCq/7DtPAADcj3gCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAgngCACiIJwCAwsx4PH7EbrbzDvs9cjcDtgorb7xk0hOALdS8nfedeajznjwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTwBABTEEwBAQTyxWTnz7NNz3Q1fyhevuDhfvOLinP+hd0x6EjDlLrv8qzn0iBf9zPl/OOOsnP1P75nAIqbdNpMeAPd3yGEH5fiXvSJXLb520lOALcDS7y3P2951fsYZP+D8Bz9+YZZ84/r84bMPn9AyppknT2w2tt12Xg787QPy8lOOz+Vf+2w+9NF3Zq+995j0LGBK3X3PPTn9zH/Mwpef8IDzi5d8I1dceU3+7Kg/ntAypp14YrOx+x675cuXX5k3nfX2POt3X5BrrrouH/3Xf5n0LGBKvfGt78yfHvVH2e8pT1p/7tbbVuWcc9+bt7x+YebM9S+QX84Gv7YbjUZP2ND1YRiWPbxz2JotW3pzXnL08euP33XeB3LqwpPzhCfunWVLb57gMmDaLPr057LN3Ll50fOfm+Urb0mSrJ2dzcI3nJNX/f0J2WXnx014IdNsY+88/UeS30iyIsnMg66Nk+y7KUaxdTrgqaM89cD9c+Gii9efm5lJ1q5dO8FVwDT698//Z+655968+K9OztrZtbn33jU59Ig/yXjdOG897/1Jkh/cfkfWrbsv965ZkzPPOGWyg5kqG4unZyT5cpIFwzB85RHYw1Zs3bp1efNbXpP/+to1Wbb05rzsuGNyww1DVq64ZdLTgCmz6Pxz1/+9fOUteeFfnJSrLr3oAZ959wc+ljvvXJ1Xn7rgkZ7HlNtgPA3DsHo0Gh2f5Lgk4olN6tvf+k7OWHhWPv7J92bu3LlZsfz7OeHYV056FgA8wMx4PN74px4mO++w3yN3M2CrsPLGSyY9AdhCzdt53we/spTEr+0AACriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgIJ4AAAriCQCgMDMejye9AQBganjyBABQEE8AAAXxBABQEE8AAAXxBABQEE8AAAXxBABQEE8AAAXxBABQEE8AAIVtJj0AHmw0Gh2T5DVJ5iV5xzAM757wJGALMBqNdkjy1STPH4bhpgnPYYp58sRmZTQa7ZXk7CTPTPI7SU4YjUYHTHQUMPVGo9FhSa5Ist+ktzD9xBObmyOSfGEYhtuHYbgryaeSHD3hTcD0Oz7JyUlWTHoI08/Xdmxu9kyy8n7HK5McOqEtwBZiGIbjkmQ0Gk16ClsAT57Y3MxJMr7f8UySdRPaAgA/Qzyxubk5yR73O949HrMDsBnxtR2bm0uTvGE0Gu2S5K4kL05ywmQnAcBPefLEZmUYhuVJXp3ki0muS/KJYRgWT3QUANzPzHg83vinAABI4skTAEBFPAEAFMQTAEBBPAEAFMQTAEBBPAEAFMQTAEDh/wCMEu3rXZmxSgAAAABJRU5ErkJggg==
+" />
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Acurácia: </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">accuracy_score</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Contratou</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">contrata_pred</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="p">),</span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Especificidade: </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cm1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="o">/</span><span class="p">(</span><span class="n">cm1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span> <span class="n">cm1</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])),</span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sensibilidade: </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cm1</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="o">/</span><span class="p">(</span><span class="n">cm1</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span> <span class="n">cm1</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])),</span><span class="s1">&#39;%&#39;</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Acurácia: 91.01 %
+Especificidade: 92.50 %
+Sensibilidade: 89.80 %
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<blockquote><p>Uma acurácia de 91% indica de a cada 100 clientes o modelo irá acertar 91 casos.</p>
+<p>Uma sensibilidade de 89% mostra a capacidade do modelo de acertar os clientes que iriam contratar o consórcio.</p>
+<p>A especificidade de 92% indica a eficácia em identificar os clientes que não irão contratar o consórcio.</p>
+</blockquote>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><!-- from https://github.com/utterance/utterances -->
+<script src="https://utteranc.es/client.js"
+        repo="lucastiagooliveira/datascience"
+        issue-term="title"
+        label="blogpost-comment"
+        theme="github-light"
+        crossorigin="anonymous"
+        async>
+</script><a class="u-url" href="/datascience/logistica/classificacao/consorcio/2020/12/14/Case_Consorcio_logistic.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/datascience/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/datascience/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/datascience/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/lucas_repo" title="lucas_repo"><svg class="svg-icon grey"><use xlink:href="/datascience/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/lucas-tiago-7a4a1362" title="lucas-tiago-7a4a1362"><svg class="svg-icon grey"><use xlink:href="/datascience/assets/minima-social-icons.svg#linkedin"></use></svg></a></li><li><a rel="me" href="https://twitter.com/LucasTiago4578" title="LucasTiago4578"><svg class="svg-icon grey"><use xlink:href="/datascience/assets/minima-social-icons.svg#twitter"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
