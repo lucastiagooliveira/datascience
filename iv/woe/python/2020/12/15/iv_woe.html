@@ -10,32 +10,32 @@
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Tutorial de como calcular o Information Value e Weight of Evidence." />
 <meta property="og:description" content="Tutorial de como calcular o Information Value e Weight of Evidence." />
-<link rel="canonical" href="https://lucastiagooliveira.github.io/iv/woe/python/2020/12/15/iv_woe.html" />
-<meta property="og:url" content="https://lucastiagooliveira.github.io/iv/woe/python/2020/12/15/iv_woe.html" />
+<link rel="canonical" href="https://lucastiagooliveira.github.io/datascience/iv/woe/python/2020/12/15/iv_woe.html" />
+<meta property="og:url" content="https://lucastiagooliveira.github.io/datascience/iv/woe/python/2020/12/15/iv_woe.html" />
 <meta property="og:site_name" content="DataScience" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-12-15T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Tutorial de como calcular o Information Value e Weight of Evidence.","headline":"Como calcular IV e WOE no Python","dateModified":"2020-12-15T00:00:00-06:00","datePublished":"2020-12-15T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/iv/woe/python/2020/12/15/iv_woe.html"},"url":"https://lucastiagooliveira.github.io/iv/woe/python/2020/12/15/iv_woe.html","@context":"https://schema.org"}</script>
+{"description":"Tutorial de como calcular o Information Value e Weight of Evidence.","headline":"Como calcular IV e WOE no Python","dateModified":"2020-12-15T00:00:00-06:00","datePublished":"2020-12-15T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/iv/woe/python/2020/12/15/iv_woe.html"},"url":"https://lucastiagooliveira.github.io/datascience/iv/woe/python/2020/12/15/iv_woe.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
-<link rel="stylesheet" href="/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/feed.xml" title="DataScience" /><link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
+<link rel="stylesheet" href="/datascience/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/datascience/feed.xml" title="DataScience" /><link rel="shortcut icon" type="image/x-icon" href="/datascience/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
 <title>Como calcular IV e WOE no Python | DataScience</title>
 <meta name="generator" content="Jekyll v4.0.0" />
 <meta property="og:title" content="Como calcular IV e WOE no Python" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Tutorial de como calcular o Information Value e Weight of Evidence." />
 <meta property="og:description" content="Tutorial de como calcular o Information Value e Weight of Evidence." />
-<link rel="canonical" href="https://lucastiagooliveira.github.io/iv/woe/python/2020/12/15/iv_woe.html" />
-<meta property="og:url" content="https://lucastiagooliveira.github.io/iv/woe/python/2020/12/15/iv_woe.html" />
+<link rel="canonical" href="https://lucastiagooliveira.github.io/datascience/iv/woe/python/2020/12/15/iv_woe.html" />
+<meta property="og:url" content="https://lucastiagooliveira.github.io/datascience/iv/woe/python/2020/12/15/iv_woe.html" />
 <meta property="og:site_name" content="DataScience" />
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2020-12-15T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Tutorial de como calcular o Information Value e Weight of Evidence.","headline":"Como calcular IV e WOE no Python","dateModified":"2020-12-15T00:00:00-06:00","datePublished":"2020-12-15T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/iv/woe/python/2020/12/15/iv_woe.html"},"url":"https://lucastiagooliveira.github.io/iv/woe/python/2020/12/15/iv_woe.html","@context":"https://schema.org"}</script>
+{"description":"Tutorial de como calcular o Information Value e Weight of Evidence.","headline":"Como calcular IV e WOE no Python","dateModified":"2020-12-15T00:00:00-06:00","datePublished":"2020-12-15T00:00:00-06:00","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/iv/woe/python/2020/12/15/iv_woe.html"},"url":"https://lucastiagooliveira.github.io/datascience/iv/woe/python/2020/12/15/iv_woe.html","@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
-<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/feed.xml" title="DataScience" />
+<link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/datascience/feed.xml" title="DataScience" />
 
 <script>
 function wrap_img(fn) {
@@ -69,7 +69,7 @@ window.onload = wrap_img;
 </head>
 <body><header class="site-header">
 
-  <div class="wrapper"><a class="site-title" rel="author" href="/">DataScience</a><nav class="site-nav">
+  <div class="wrapper"><a class="site-title" rel="author" href="/datascience/">DataScience</a><nav class="site-nav">
         <input type="checkbox" id="nav-trigger" class="nav-trigger" />
         <label for="nav-trigger">
           <span class="menu-icon">
@@ -79,7 +79,7 @@ window.onload = wrap_img;
           </span>
         </label>
 
-        <div class="trigger"><a class="page-link" href="/about/">About Me</a><a class="page-link" href="/search/">Search</a><a class="page-link" href="/categories/">Tags</a></div>
+        <div class="trigger"><a class="page-link" href="/datascience/about/">About Me</a><a class="page-link" href="/datascience/search/">Search</a><a class="page-link" href="/datascience/categories/">Tags</a></div>
       </nav></div>
 </header>
 <main class="page-content" aria-label="Content">
@@ -100,13 +100,13 @@ window.onload = wrap_img;
     
       <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
       
-        <a class="category-tags-link" href="/categories/#iv">iv</a>
+        <a class="category-tags-link" href="/datascience/categories/#iv">iv</a>
         &nbsp;
       
-        <a class="category-tags-link" href="/categories/#woe">woe</a>
+        <a class="category-tags-link" href="/datascience/categories/#woe">woe</a>
         &nbsp;
       
-        <a class="category-tags-link" href="/categories/#python">python</a>
+        <a class="category-tags-link" href="/datascience/categories/#python">python</a>
         
       
       </p>
@@ -118,19 +118,19 @@ window.onload = wrap_img;
           <div class="px-2">
 
     <a href="https://github.com/lucastiagooliveira/datascience/tree/master/_notebooks/2020-12-15-iv_woe.ipynb" role="button" target="_blank">
-<img class="notebook-badge-image" src="/assets/badges/github.svg" alt="View On GitHub">
+<img class="notebook-badge-image" src="/datascience/assets/badges/github.svg" alt="View On GitHub">
     </a>
 </div>
 
           <div class="px-2">
     <a href="https://mybinder.org/v2/gh/lucastiagooliveira/datascience/master?filepath=_notebooks%2F2020-12-15-iv_woe.ipynb" target="_blank">
-        <img class="notebook-badge-image" src="/assets/badges/binder.svg" alt="Open In Binder"/>
+        <img class="notebook-badge-image" src="/datascience/assets/badges/binder.svg" alt="Open In Binder"/>
     </a>
 </div>
 
           <div class="px-2">
     <a href="https://colab.research.google.com/github/lucastiagooliveira/datascience/blob/master/_notebooks/2020-12-15-iv_woe.ipynb" target="_blank">
-        <img class="notebook-badge-image" src="/assets/badges/colab.svg" alt="Open In Colab"/>
+        <img class="notebook-badge-image" src="/datascience/assets/badges/colab.svg" alt="Open In Colab"/>
     </a>
 </div>
         </div>
@@ -467,20 +467,20 @@ Information value of outros_debitos is 0.114104
         theme="github-light"
         crossorigin="anonymous"
         async>
-</script><a class="u-url" href="/iv/woe/python/2020/12/15/iv_woe.html" hidden></a>
+</script><a class="u-url" href="/datascience/iv/woe/python/2020/12/15/iv_woe.html" hidden></a>
 </article>
       </div>
     </main><footer class="site-footer h-card">
-  <data class="u-url" href="/"></data>
+  <data class="u-url" href="/datascience/"></data>
 
   <div class="wrapper">
 
     <div class="footer-col-wrapper">
       <div class="footer-col">
         <p class="feed-subscribe">
-          <a href="/feed.xml">
+          <a href="/datascience/feed.xml">
             <svg class="svg-icon orange">
-              <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+              <use xlink:href="/datascience/assets/minima-social-icons.svg#rss"></use>
             </svg><span>Subscribe</span>
           </a>
         </p>
@@ -490,7 +490,7 @@ Information value of outros_debitos is 0.114104
       </div>
     </div>
 
-    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/lucastiagooliveira%2Flucas_repo" title="lucastiagooliveira/lucas_repo"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/lucas-tiago-7a4a1362" title="lucas-tiago-7a4a1362"><svg class="svg-icon grey"><use xlink:href="/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/lucastiagooliveira%2Flucas_repo" title="lucastiagooliveira/lucas_repo"><svg class="svg-icon grey"><use xlink:href="/datascience/assets/minima-social-icons.svg#github"></use></svg></a></li><li><a rel="me" href="https://www.linkedin.com/in/lucas-tiago-7a4a1362" title="lucas-tiago-7a4a1362"><svg class="svg-icon grey"><use xlink:href="/datascience/assets/minima-social-icons.svg#linkedin"></use></svg></a></li></ul>
 </div>
 
   </div>
