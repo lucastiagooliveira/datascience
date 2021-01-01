@@ -34,13 +34,13 @@ url: "https://lucastiagooliveira.github.io" # the base hostname & protocol for y
 #
 # 3. You must replace the parameter `baseurl` in _action_files/settings.ini with the same value as you set here but WITHOUT QUOTES.
 #
-baseurl: "/datascience" # the subpath of your site, e.g. "/blog".
+baseurl: "/" # the subpath of your site, e.g. "/blog".
 
 # Github and twitter are optional:
 minima:
   social_links:
-    twitter: LucasTiago4578
-    github: lucas_repo
+    #twitter: LucasTiago4578
+    github: lucastiagooliveira/lucas_repo
     linkedin: lucas-tiago-7a4a1362
 
 # Set this to true to get LaTeX math equation support
