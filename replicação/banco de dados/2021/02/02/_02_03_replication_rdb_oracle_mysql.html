@@ -4,9 +4,9 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="twitter:card" content="summary" /><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Replicação hetorogénea de banco de dados (Oracle GoldenGate) | DataScience</title>
+<title>Replicação hetorogênea de banco de dados (Oracle GoldenGate) | DataScience</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Replicação hetorogénea de banco de dados (Oracle GoldenGate)" />
+<meta property="og:title" content="Replicação hetorogênea de banco de dados (Oracle GoldenGate)" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados" />
 <meta property="og:description" content="Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados" />
@@ -16,12 +16,12 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-02-02T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados","@type":"BlogPosting","headline":"Replicação hetorogénea de banco de dados (Oracle GoldenGate)","dateModified":"2021-02-02T00:00:00-06:00","url":"https://lucastiagooliveira.github.io/datascience/replica%C3%A7%C3%A3o/banco%20de%20dados/2021/02/02/_02_03_replication_rdb_oracle_mysql.html","datePublished":"2021-02-02T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/replica%C3%A7%C3%A3o/banco%20de%20dados/2021/02/02/_02_03_replication_rdb_oracle_mysql.html"},"@context":"https://schema.org"}</script>
+{"description":"Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados","@type":"BlogPosting","headline":"Replicação hetorogênea de banco de dados (Oracle GoldenGate)","dateModified":"2021-02-02T00:00:00-06:00","url":"https://lucastiagooliveira.github.io/datascience/replica%C3%A7%C3%A3o/banco%20de%20dados/2021/02/02/_02_03_replication_rdb_oracle_mysql.html","datePublished":"2021-02-02T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/replica%C3%A7%C3%A3o/banco%20de%20dados/2021/02/02/_02_03_replication_rdb_oracle_mysql.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/datascience/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://lucastiagooliveira.github.io/datascience/feed.xml" title="DataScience" /><link rel="shortcut icon" type="image/x-icon" href="/datascience/images/favicon.ico"><!-- Begin Jekyll SEO tag v2.6.1 -->
-<title>Replicação hetorogénea de banco de dados (Oracle GoldenGate) | DataScience</title>
+<title>Replicação hetorogênea de banco de dados (Oracle GoldenGate) | DataScience</title>
 <meta name="generator" content="Jekyll v4.0.0" />
-<meta property="og:title" content="Replicação hetorogénea de banco de dados (Oracle GoldenGate)" />
+<meta property="og:title" content="Replicação hetorogênea de banco de dados (Oracle GoldenGate)" />
 <meta property="og:locale" content="en_US" />
 <meta name="description" content="Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados" />
 <meta property="og:description" content="Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados" />
@@ -31,7 +31,7 @@
 <meta property="og:type" content="article" />
 <meta property="article:published_time" content="2021-02-02T00:00:00-06:00" />
 <script type="application/ld+json">
-{"description":"Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados","@type":"BlogPosting","headline":"Replicação hetorogénea de banco de dados (Oracle GoldenGate)","dateModified":"2021-02-02T00:00:00-06:00","url":"https://lucastiagooliveira.github.io/datascience/replica%C3%A7%C3%A3o/banco%20de%20dados/2021/02/02/_02_03_replication_rdb_oracle_mysql.html","datePublished":"2021-02-02T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/replica%C3%A7%C3%A3o/banco%20de%20dados/2021/02/02/_02_03_replication_rdb_oracle_mysql.html"},"@context":"https://schema.org"}</script>
+{"description":"Blog destinado a compartilhar experiências, ferramentas e dicas relativos a Ciência de Dados","@type":"BlogPosting","headline":"Replicação hetorogênea de banco de dados (Oracle GoldenGate)","dateModified":"2021-02-02T00:00:00-06:00","url":"https://lucastiagooliveira.github.io/datascience/replica%C3%A7%C3%A3o/banco%20de%20dados/2021/02/02/_02_03_replication_rdb_oracle_mysql.html","datePublished":"2021-02-02T00:00:00-06:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://lucastiagooliveira.github.io/datascience/replica%C3%A7%C3%A3o/banco%20de%20dados/2021/02/02/_02_03_replication_rdb_oracle_mysql.html"},"@context":"https://schema.org"}</script>
 <!-- End Jekyll SEO tag -->
 
 <link href="https://unpkg.com/@primer/css/dist/primer.css" rel="stylesheet" />
@@ -87,7 +87,7 @@ window.onload = wrap_img;
         <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
 
   <header class="post-header">
-    <h1 class="post-title p-name" itemprop="name headline">Replicação hetorogénea de banco de dados (Oracle GoldenGate)</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-02T00:00:00-06:00" itemprop="datePublished">
+    <h1 class="post-title p-name" itemprop="name headline">Replicação hetorogênea de banco de dados (Oracle GoldenGate)</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2021-02-02T00:00:00-06:00" itemprop="datePublished">
         Feb 2, 2021
       </time>
        • <span class="read-time" title="Estimated read time">
